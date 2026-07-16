@@ -2,7 +2,12 @@ import requests
 
 # Define the core components of our API request as constants.
 BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
-API_KEY = "30bcc818e2c899bc07a051290195446e"  
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+API_KEY = os.getenv("OPENWEATHER_API_KEY")
 CITY = "London"
 
 # Construct the full API request URL.

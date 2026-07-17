@@ -1,58 +1,78 @@
 import requests
-
-# Define the core components of our API request as constants.
-BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 from dotenv import load_dotenv
 import os
 import sys
+import argparse
+
+# Define constants
+BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
 load_dotenv()
 
-API_KEY = os.getenv("OPENWEATHER_API_KEY")
-CITY = "London"
 
-# Construct the full API request URL.
-request_url = f"{BASE_URL}?q={CITY}&appid={API_KEY}"
-city_name = CITY  # Store the city name for later use in output.
+# --- DATA FETCHING FUNCTION ---
+def get_weather_data(city, api_key):
+    """
+    Fetches weather data from the OpenWeatherMap API for a given city.
+    """
+    request_url = f"{BASE_URL}?q={city}&appid={api_key}"
 
-try:
-# Make the API call.
-    response = requests.get(request_url)
+    try:
+        response = requests.get(request_url)
+        response.raise_for_status()
 
-# Check for a successful response.
-    if response.status_code == 200:
-    # Parse the JSON data.
         data = response.json()
-    
-    # Extract the relevant data into descriptive variables.
-        temperature = data['main']['temp']
-        humidity = data['main']['humidity']
-        weather_description = data['weather'][0]['description']
 
-    # Use f-strings to format and print the extracted data.
-        print(f"Weather in {city_name}:")
-        print("-" * 20)
-        print(f"Temperature: {temperature}K")
-        print(f"Humidity: {humidity}%")
-        print(f"Description: {weather_description.capitalize()}")
-    else:
-    # Print an error message if the request failed.
-        print(f"Error: The request failed with status code {response.status_code}")
+        weather_info = {
+            "city": data["name"],
+            "temperature": data["main"]["temp"],
+            "humidity": data["main"]["humidity"],
+            "description": data["weather"][0]["description"],
+        }
+        return weather_info
 
-except requests.exceptions.HTTPError as http_err:
-    # Check for specific HTTP status codes to provide tailored error messages.
-    if http_err.response.status_code == 401:
-        print("Error: Invalid API Key. Please check your API_KEY variable.")
-    elif http_err.response.status_code == 404:
-        print("Error: City not found. Please check the spelling of the city name.")
-    else:
-        # For all other 4xx or 5xx errors, print a generic message.
-        print(f"An HTTP error occurred: {http_err}")
-    sys.exit(1)
+    except requests.exceptions.HTTPError as http_err:
+        if http_err.response.status_code == 401:
+            print("Error: Invalid API Key. Please check your OPENWEATHER_API_KEY.")
+        elif http_err.response.status_code == 404:
+            print(f"Error: City not found. Please check the spelling of '{city}'.")
+        else:
+            print(f"An API error occurred: {http_err}")
+        sys.exit(1)
 
-except requests.exceptions.RequestException as e:
-    # This will catch any network-related errors (e.g., no internet, DNS failure).
-    print(f"Network error: Could not connect to the weather service.")
-    print(f"Details: {e}")
-    # Exit the script with a non-zero status code to indicate an error.
-    sys.exit(1)
+    except requests.exceptions.RequestException as e:
+        print("Network error: Could not connect to the weather service.")
+        print(f"Details: {e}")
+        sys.exit(1)
+
+
+# --- PRESENTATION FUNCTION ---
+def display_weather_data(data):
+    """
+    Formats and prints the weather data to the console.
+    """
+    print()
+    print(f"Weather in {data['city']}:")
+    print("-" * 20)
+    print(f"Temperature: {data['temperature']}K")
+    print(f"Humidity: {data['humidity']}%")
+    print(f"Conditions: {data['description'].capitalize()}")
+    print()
+
+
+# --- MAIN ORCHESTRATION FUNCTION ---
+def main():
+    """
+    The main function to run the weather CLI tool.
+    """
+    API_KEY = os.getenv("OPENWEATHER_API_KEY")
+    CITY = "London"
+
+    weather_data = get_weather_data(CITY, API_KEY)
+
+    if weather_data:
+        display_weather_data(weather_data)
+
+
+if __name__ == "__main__":
+    main()

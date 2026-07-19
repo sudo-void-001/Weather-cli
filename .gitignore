@@ -4,3 +4,20 @@ __pycache__/
 .env
 .vscode/
 cache.json
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Python packaging
+*.egg
+pip-wheel-metadata/
+
+# Test & cache
+.pytest_cache/
+.mypy_cache/
+
+# OS files
+.DS_Store
+Thumbs.db

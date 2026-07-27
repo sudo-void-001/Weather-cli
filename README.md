@@ -15,7 +15,7 @@ A modern Python command-line application that fetches real-time weather informat
 - 📦 Packaged for installation using `pip`.
 - 🛡️ Graceful error handling for invalid cities, network issues, and API errors.
 
----
+----
 
 ## Tech Stack
 

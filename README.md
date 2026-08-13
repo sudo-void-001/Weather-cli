@@ -1,5 +1,5 @@
 # API-based Weather Fetcher CLI
-
+ 
 A modern Python command-line application that fetches real-time weather information using the OpenWeatherMap API. The project demonstrates best practices for API integration, command-line interfaces, secure configuration management, local caching, and Python packaging.
 
 ------------------------------------

@@ -5,11 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "api-weather-fetcher-cli"
 version = "0.1.0"
-description = "A command-line tool to fetch and display real-time weather data from the OpenWeatherMap API."
+description = "A command-line [CLI] tool to fetch and display real-time weather data from the OpenWeatherMap API."
 dependencies = [
     "requests",
     "python-dotenv",
 ]
 
 [project.scripts]
-weather-cli = "weather:main"
+weather-cli = "weather:main"            

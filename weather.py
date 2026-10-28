@@ -1,17 +1,17 @@
 import argparse
 import json
 import os
-import sys
+import sys   
 import time
 
 from dotenv import load_dotenv
 import requests
 
 load_dotenv()
-
+        
 BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 CACHE_FILE = "cache.json"
-CACHE_DURATION_SECONDS = 600
+CACHE_DURATION_SECONDS = 601
 
 
 def get_weather_data(city, api_key, units="metric"):

@@ -1,5 +1,5 @@
-venv/
-__pycache__/
+venv/      
+__pycache__/    
 *.pyc
 .env
 .vscode/
@@ -9,10 +9,10 @@ cache.json
 build/
 dist/
 *.egg-info/
-
+                        
 # Python packaging
 *.egg
-pip-wheel-metadata/
+pip-wheel-metadata/                                          
 
 # Test & cache
 .pytest_cache/
